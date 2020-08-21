@@ -1,0 +1,46 @@
+{
+  "name": "reddit-clone-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch": "tsc -w",
+    "dev": "nodemon dist/index.js",
+    "start": "node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vivian8910/Reddit-clone-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vivian8910/Reddit-clone-project/issues"
+  },
+  "homepage": "https://github.com/vivian8910/Reddit-clone-project#readme",
+  "devDependencies": {
+    "@types/node": "^14.6.0",
+    "eslint": "^7.7.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.0.5",
+    "ts-node": "^8.10.2",
+    "typescript": "^4.0.2"
+  },
+  "dependencies": {
+    "@mikro-orm/cli": "^4.0.0-alpha.0",
+    "@mikro-orm/core": "^4.0.0-alpha.0",
+    "@mikro-orm/migrations": "^4.0.0-alpha.0",
+    "@mikro-orm/postgresql": "^4.0.0-alpha.0",
+    "pg": "^8.3.2"
+  },
+  "mikro-orm": {
+    "useTsNode": true,
+    "configPaths": [
+      "./src/mikro-orm.config.ts",
+      "./dist/mikro-orm.config.js"
+    ]
+  }
+}
