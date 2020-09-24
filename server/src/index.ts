@@ -49,7 +49,7 @@ const main = async () => {
       resolvers: [HelloResolver, PostResolver, UserResolver],
       validate: false,
     }),
-    context: ({ req, res }) => ({ em: orm.em, req, res }),
+    context: ({ req, res }) => ({ em: orm.em.fork(), req, res }),
   });
 
   apolloServer.applyMiddleware({ app, cors: false });
