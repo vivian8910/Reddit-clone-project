@@ -7,7 +7,8 @@ export const useIsAuth = () => {
   const router = useRouter();
   useEffect(() => {
     if (!fetching && !data?.me) {
-      router.replace('login');
+      // take the user back to the intended page after they logged in
+      router.replace('/login?next=' + router.pathname);
     }
   }, [data, router, fetching]);
 };
