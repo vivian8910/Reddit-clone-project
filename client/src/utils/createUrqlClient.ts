@@ -120,7 +120,6 @@ export const createUrqlClient = (ssrExchange: any) => ({
         Mutation: {
           createPost: (_result, _args, cache, _info) => {
             const allFields = cache.inspectFields('Query');
-            console.log(allFields);
             const fieldInfos = allFields.filter((info) => info.fieldName === 'posts');
             fieldInfos.forEach((fieldInfo) => {
               cache.invalidate('Query', 'posts', fieldInfo.arguments || {});
