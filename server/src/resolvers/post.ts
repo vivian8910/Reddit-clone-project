@@ -16,6 +16,7 @@ import {
 } from 'type-graphql';
 import { Post } from '../entities/Post';
 import { getConnection } from 'typeorm';
+import { Upvote } from '../entities/Upvote';
 
 @InputType()
 class PostInput {
@@ -51,20 +52,48 @@ export class PostResolver {
     const realValue = isUpvote ? 1 : -1;
     const { userId } = req.session;
 
-    await getConnection().query(
-      `
-      START TRANSACTION;
+    const previousVote = await Upvote.findOne({ where: { postId, userId } });
 
-      insert into upvote ("userId", "postId", value)
-      values(${userId}, ${postId}, ${realValue});
+    if (previousVote && previousVote.value !== realValue) {
+      await getConnection().transaction(async (tm) => {
+        await tm.query(
+          `
+            update upvote
+            set value = $1
+            where "postId" = $2 and "userId" = $3
+          `,
+          [realValue, postId, userId]
+        );
 
-      update post
-      set points = points + ${realValue}
-      where id = ${postId};
+        await tm.query(
+          `
+            update post
+            set points =  points + $1
+            where id = $2
+          `,
+          [2 * realValue, postId]
+        );
+      });
+    } else if (!previousVote) {
+      await getConnection().transaction(async (tm) => {
+        await tm.query(
+          `
+            insert into upvote ("userId", "postId", value)
+            values($1, $2, $3)
+          `,
+          [userId, postId, realValue]
+        );
 
-      COMMIT;
-      `
-    );
+        await tm.query(
+          `
+            update post
+            set points =  points + $1
+            where id = $2
+          `,
+          [realValue, postId]
+        );
+      });
+    }
     return true;
   }
 
