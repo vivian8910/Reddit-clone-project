@@ -28,6 +28,8 @@ export const VoteSection: React.FC<VoteSectionProps> = ({ post }) => {
         onClick={() => handleUpvote(post.id)}
         isLoading={isLoading === 'upvote-loading'}
         aria-label="upvote post"
+        isActive={post.voteStatus === 1}
+        isDisabled={post.voteStatus === 1}
       />
       {post.points}
       <IconButton
@@ -35,6 +37,8 @@ export const VoteSection: React.FC<VoteSectionProps> = ({ post }) => {
         onClick={() => handleDownvote(post.id)}
         isLoading={isLoading === 'downvote-loading'}
         aria-label="downvote post"
+        isActive={post.voteStatus === -1}
+        isDisabled={post.voteStatus === -1}
       />
     </Flex>
   );
